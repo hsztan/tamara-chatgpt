@@ -1,6 +1,6 @@
-class CreateChatMessages < ActiveRecord::Migration[7.0]
+class CreateMessages < ActiveRecord::Migration[7.0]
   def change
-    create_table :chat_messages do |t|
+    create_table :messages do |t|
       t.string :role
       t.text :content
 

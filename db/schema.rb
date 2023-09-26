@@ -14,7 +14,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_26_161604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "chat_messages", force: :cascade do |t|
+  create_table "messages", force: :cascade do |t|
     t.string "role"
     t.text "content"
     t.datetime "created_at", null: false
