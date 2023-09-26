@@ -1,0 +1,44 @@
+<div class="container mx-auto py-4">
+  <div class="container mx-auto text-xl">Tamara's Journal</div>
+  <div id="chat-box" class="border p-4">
+    <% @messages.each do |message| %>
+      <div class="<%= message.role %>">
+        <%= message.content %>
+      </div>
+    <% end %>
+  </div>
+  <input id="user-input" type="text" placeholder="Type your message" class="mt-4 border p-2" />
+  <button id="send-button" onclick="sendMessage()" class="mt-4 bg-blue-500 text-white p-2">Send</button>
+</div>
+<script>
+  async function sendMessage() {
+    const userInput = document.getElementById('user-input').value;
+
+    // Post the user message to the server and get a response
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': '<%= form_authenticity_token %>'
+      },
+      body: JSON.stringify({ user_message: userInput })
+    });
+
+    const data = await response.json();
+
+    // Append the user and assistant messages to the chat box
+    const chatBox = document.getElementById('chat-box');
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.className = 'user';
+    userMessageDiv.textContent = data.user_message;
+    chatBox.appendChild(userMessageDiv);
+
+    const assistantMessageDiv = document.createElement('div');
+    assistantMessageDiv.className = 'assistant';
+    assistantMessageDiv.textContent = data.assistant_message;
+    chatBox.appendChild(assistantMessageDiv);
+
+    // Clear the user input
+    document.getElementById('user-input').value = '';
+  }
+</script>
